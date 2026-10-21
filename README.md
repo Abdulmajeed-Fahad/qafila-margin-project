@@ -50,7 +50,7 @@ Counts are for the course dataset (seed 2026).
 
 | Test | On | What it protects against |
 |---|---|---|
-| `unique`, `not_null` | `stg_products.sku`, `product_id`, `stg_stores`, `stg_orders` keys | Ambiguous SKU after trimming; duplicated keys that would double revenue in joins |
+| `unique`, `not_null` | `stg_products.sku`, `product_id`, `stg_stores`, `stg_orders` keys | Ambiguous SKU after trimming; duplicated keys that would double revenue in joins. The two checks that depend only on the incoming data (SKU unique, order date present) are `warn`, so a surprise in a new dataset is reported without stopping the pipeline |
 | `unique_combination` | `stg_order_items` (order_id, line_no) | Duplicate order lines |
 | `unique_combination` | `product_cost_history` (sku, valid_from) | Two versions starting the same day |
 | `unique_combination` | `weekly_margin` (iso_week, city, category) | A broken grain |

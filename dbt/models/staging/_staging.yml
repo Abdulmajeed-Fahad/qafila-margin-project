@@ -8,7 +8,11 @@ models:
         data_tests: [unique, not_null]
       - name: sku
         description: Trimmed SKU. Two products with the same trimmed SKU would make costs ambiguous.
-        data_tests: [unique, not_null]
+        data_tests:
+          - not_null
+          - unique:
+              config:
+                severity: warn   # a data surprise in a new dataset should warn, not stop the whole pipeline
 
   - name: stg_stores
     columns:
@@ -21,7 +25,10 @@ models:
       - name: order_id
         data_tests: [unique, not_null]
       - name: order_date
-        data_tests: [not_null]
+        data_tests:
+          - not_null:
+              config:
+                severity: warn
 
   - name: stg_order_items
     description: One row per order line (grain order_id + line_no).

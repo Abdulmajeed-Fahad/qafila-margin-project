@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: product_cost_history
+    description: SCD2 history of supplier costs. One row per SKU per cost version.
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [sku, valid_from]
+    columns:
+      - name: sku
+        data_tests: [not_null]
+      - name: unit_cost_sar
+        data_tests: [positive]
+      - name: valid_from
+        data_tests: [not_null]

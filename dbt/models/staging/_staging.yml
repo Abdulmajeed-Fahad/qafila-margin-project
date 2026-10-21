@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: stg_products
+    description: One row per product, SKU trimmed.
+    columns:
+      - name: product_id
+        data_tests: [unique, not_null]
+      - name: sku
+        description: Trimmed SKU. Two products with the same trimmed SKU would make costs ambiguous.
+        data_tests: [unique, not_null]
+
+  - name: stg_stores
+    columns:
+      - name: store_id
+        data_tests: [unique, not_null]
+
+  - name: stg_orders
+    description: One row per order, with the Riyadh order date.
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+      - name: order_date
+        data_tests: [not_null]
+
+  - name: stg_order_items
+    description: One row per order line (grain order_id + line_no).
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [order_id, line_no]
+
+  - name: stg_supplier_prices
+    description: One row per supplier price row, parsed. Unusable rows carry a reject_reason.
+    columns:
+      - name: reject_reason
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [unknown_sku, invalid_cost]

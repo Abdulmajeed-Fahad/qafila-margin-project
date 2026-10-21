@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: weekly_margin
+    description: Weekly gross margin. One row per iso_week x city x category with at least one counted line.
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [iso_week, city, category]
+    columns:
+      - name: iso_week
+        data_tests: [not_null]
+      - name: lines
+        data_tests: [positive]
